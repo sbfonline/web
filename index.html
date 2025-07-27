@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asignar Cartón de Bingo</title>
+  <style>
+    :root {
+      --azul: #1a73e8;
+      --gris-fondo: #f7f9fc;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: var(--gris-fondo);
+      margin: 0;
+      padding: 2rem 1rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      background-color: white;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 6.146a.5.5 0 0 1 .708 0L8 8.793l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1rem;
+    }
+    
+    label[for="asistente"] {
+      font-size: 1rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      display: block;
+      color: #333;
+    }
+    
+    input,
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: var(--azul);
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1666cc;
+    }
+
+    #estado,
+    #resultado,
+    #acciones {
+      display: none;
+    }
+
+    #resultado {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #acciones {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    #acciones button {
+      flex: 1 1 45%;
+    }
+
+    #imagen-carton {
+      width: 100%;
+      height: auto;
+      margin-top: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    #barra {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      margin: 0.5rem 0;
+    }
+
+    #progreso {
+      height: 10px;
+      width: 0%;
+      background-color: #4caf50;
+      border-radius: 5px;
+      transition: width 0.2s;
+    }
+
+    /* Responsive ajustes */
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1.5rem;
+      }
+      input,
+      button {
+        font-size: 1rem;
+      }
+      #acciones button {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🎟️ Asignar Cartón</h2>
+  
+  <label for="asistente" style="display: block; font-weight: bold; margin-bottom: 0.4rem;">👤 Asistente:</label>
+  <select id="asistente">
+  <option disabled selected>Cargando asistentes...</option>
+  </select>
+  
+  <input id="cel" placeholder="Número de WhatsApp (ej. +573001112233)" />
+  <button id="enviar">Asignar cartón</button>
+
+  <div id="estado">
+    ⏳ Registrando número...
+    <div id="barra"><div id="progreso"></div></div>
+    <div id="tiempo">⏱️ 0.0s</div>
+  </div>
+
+  <div id="resultado">
+    <p><strong>👤 Asistente:</strong> <span id="asistente-nombre"></span></p>
+    <p><strong>✅ Cartón asignado:</strong> <span id="carton-num"></span></p>
+    <p><strong>📎 Link:</strong> <a id="carton-link" href="" target="_blank"></a></p>
+    <img id="imagen-carton" src="" alt="Cartón asignado" />
+  </div>
+
+  <div id="acciones">
+    <button id="whatsapp">Enviar por WhatsApp</button>
+    <button onclick="resetear()">Cerrar</button>
+  </div>
+
+  <script>
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwJleOzBnsq424OG8RncssS3h5P4Ir24-GkEZQCGMhcWPCC4rFA_zQd2MKJdAOdbJjCNg/exec";
+
+    let linkGlobal = "";
+    let numeroGlobal = "";
+    let tiempoInterval;
+    let tiempoInicio;
+
+    async function cargarAsistentes() {
+      try {
+        const res = await fetch(`${WEBAPP_URL}?accion=asistentes`);
+        const asistentes = await res.json();
+        const select = document.getElementById("asistente");
+
+        select.innerHTML = "";
+        asistentes.forEach(nombre => {
+          const opt = document.createElement("option");
+          opt.value = nombre.toLowerCase();
+          opt.textContent = nombre;
+          select.appendChild(opt);
+        });
+      } catch (e) {
+        alert("⚠️ No se pudo cargar la lista de asistentes");
+        console.error(e);
+      }
+      console.log("Cargando asistentes desde:", `${WEBAPP_URL}?accion=asistentes`)
+    }
+
+    document.getElementById("enviar").onclick = async () => {
+      
+      const numero = document.getElementById("cel").value.trim();
+      const asistente = document.getElementById("asistente").value;
+
+      if (!numero.startsWith("+57")) {
+        alert("⚠️ Ingresa el número con +57 (ej: +573001112233)");
+        return;
+      }
+
+      document.getElementById("estado").style.display = "block";
+      document.getElementById("resultado").style.display = "none";
+      document.getElementById("acciones").style.display = "none";
+      document.getElementById("progreso").style.width = "0%";
+      document.getElementById("tiempo").innerText = "⏱️ 0.0s";
+
+      tiempoInicio = Date.now();
+      tiempoInterval = setInterval(() => {
+        const transcurrido = ((Date.now() - tiempoInicio) / 1000).toFixed(1);
+        document.getElementById("tiempo").innerText = `⏱️ ${transcurrido}s`;
+        const porcentaje = Math.min((transcurrido / 3) * 100, 100);
+        document.getElementById("progreso").style.width = `${porcentaje}%`;
+      }, 100);
+
+      try {
+        const res = await fetch(`${WEBAPP_URL}?numero=${encodeURIComponent(numero)}&asistente=${encodeURIComponent(asistente)}`);
+
+        if (!res.ok) throw new Error(`Error HTTP ${res.status}: ${res.statusText}`);
+
+        const data = await res.json();
+        clearInterval(tiempoInterval);
+        document.getElementById("estado").style.display = "none";
+
+        if (data.error) {
+          alert("⚠️ " + data.error);
+          return;
+        }
+      
+        document.getElementById("carton-num").innerText = data.carton;
+        document.getElementById("carton-link").innerText = data.link;
+        document.getElementById("carton-link").href = data.link;
+        document.getElementById("imagen-carton").src = data.link;
+        document.getElementById("asistente-nombre").innerText = asistente;
+        document.getElementById("resultado").style.display = "block";
+        document.getElementById("acciones").style.display = "flex";
+      
+        linkGlobal = data.link;
+        numeroGlobal = numero;
+      
+      } catch (err) {
+        clearInterval(tiempoInterval);
+        document.getElementById("estado").style.display = "none";
+        alert("❌ Error al asignar cartón:\n" + err.message);
+        console.error("Error técnico:", err);
+      }
+
+    };
+
+    document.getElementById("whatsapp").onclick = () => {
+      const texto = `Hola 👋, aquí está tu cartón de bingo:\n${linkGlobal}`;
+      const waUrl = `https://wa.me/${numeroGlobal.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
+      window.open(waUrl, "_blank");
+    };
+
+    function resetear() {
+      document.getElementById("cel").value = "";
+      document.getElementById("resultado").style.display = "none";
+      document.getElementById("acciones").style.display = "none";
+      document.getElementById("imagen-carton").src = "";
+    }
+
+    // Cargar asistentes al iniciar
+    window.onload = cargarAsistentes;
+    
+  </script>
+</body>
+</html>
