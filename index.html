@@ -137,8 +137,6 @@
 </head>
 <body>
 
-  <img src="https://drive.google.com/uc?export=view&id=1-DbeAyzb6QyyMXeOBB7MixQCEc1tw-ow" alt="Imagen test" style="width: 100%; margin-top: 20px;" />
-
 
   <h2>🎟️ Asignar Cartón</h2>
   
@@ -160,11 +158,10 @@
     <p><strong>👤 Asistente:</strong> <span id="asistente-nombre"></span></p>
     <p><strong>✅ Cartón asignado:</strong> <span id="carton-num"></span></p>
     <p><strong>📎 Link:</strong> <a id="carton-link" href="" target="_blank"></a></p>
-    <img id="imagen-carton" src="" alt="Cartón asignado" />
   </div>
 
   <div id="acciones">
-    <button id="copiar">Copiar imagen</button>
+    <button id="ver-imagen">Ver imagen</button>
     <button id="whatsapp">Enviar por WhatsApp</button>
     <button onclick="resetear()">Cerrar</button>
   </div>
@@ -261,27 +258,13 @@
       window.open(waUrl, "_blank");
     };
 
-    document.getElementById("copiar").onclick = async () => {
-      if (!linkGlobal) {
-        alert("⚠️ No hay imagen para copiar.");
-        return;
-      }
-    
-      try {
-        const response = await fetch(linkGlobal);
-        const blob = await response.blob();
-    
-        await navigator.clipboard.write([
-          new ClipboardItem({ [blob.type]: blob })
-        ]);
-    
-        alert("✅ Imagen copiada al portapapeles.\nAhora puedes pegarla en WhatsApp.");
-      } catch (err) {
-        console.error("❌ Error al copiar:", err);
-        alert("❌ No se pudo copiar la imagen. Intenta desde un navegador compatible.");
+    document.getElementById("ver-imagen").onclick = () => {
+      if (linkGlobal) {
+        window.open(linkGlobal, "_blank");
+      } else {
+        alert("⚠️ No hay imagen cargada aún.");
       }
     };
-
 
     function resetear() {
       document.getElementById("cel").value = "";
