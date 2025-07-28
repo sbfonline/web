@@ -238,6 +238,16 @@
 
     document.getElementById("whatsapp").onclick = () => {
       const texto = `Aquí está tu cartón de bingo:\n${linkGlobal}`;
+
+      const idTexto = document.getElementById("carton-id").innerText;
+      const fechaTexto = document.getElementById("carton-fecha").innerText;
+      const texto = `Mucha suerte 🥳🎉
+      
+      🆔 Módulo: ${idTexto}
+      📅 Fecha del sorteo: ${fechaTexto}
+      
+      📣 Síguenos en Facebook: https://www.facebook.com/ferchodinamica`;
+      
       const waUrl = `https://wa.me/${numeroGlobal.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
       window.open(waUrl, "_blank");
     };
