@@ -1,3 +1,73 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ingreso con Clave</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 1rem;
+    }
+    input, button {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #1a73e8;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0c5ed7;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔐 Ingresar con clave</h2>
+    <input id="clave" type="password" placeholder="Escribe tu clave"/>
+    <button onclick="validarClave()">Entrar</button>
+    <p id="error" style="color:red;"></p>
+  </div>
+
+  <script>
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycb.../exec"; // Reemplaza con tu URL
+
+    async function validarClave() {
+      const clave = document.getElementById("clave").value.trim();
+      const res = await fetch(`${WEBAPP_URL}?accion=validar&clave=${encodeURIComponent(clave)}`);
+      const data = await res.json();
+
+      if (data.error) {
+        document.getElementById("error").innerText = data.error;
+        return;
+      }
+
+      // Guardar el asistente en localStorage para la siguiente página
+      localStorage.setItem("asistente", data.asistente);
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
