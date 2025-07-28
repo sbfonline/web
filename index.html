@@ -144,8 +144,10 @@
 
   <div id="resultado">
     <p><strong>👤 Asistente:</strong> <span id="nombre-asistente"></span></p>
+    <p><strong>🆔 ID del cartón:</strong> <span id="carton-id"></span></p>
+    <p><strong>📅 Fecha del sorteo:</strong> <span id="carton-fecha"></span></p>
     <p><strong>📱 Celular registrado:</strong> <span id="numero-registrado"></span></p>
-    <p><strong>✅ Cartón asignado:</strong> <span id="carton-num"></span></p>
+    <p><strong>✅ Archivo asignado:</strong> <span id="carton-num"></span></p>
     <p><strong>📎 Link:</strong> <a id="carton-link" href="" target="_blank"></a></p>
   </div>
 
@@ -216,7 +218,9 @@
       
         document.getElementById("carton-num").innerText = data.carton;
         document.getElementById("carton-link").innerText = data.link;
-        document.getElementById("carton-link").href = data.link;        
+        document.getElementById("carton-link").href = data.link;   
+        document.getElementById("carton-id").innerText = data.id || "N/A";
+        document.getElementById("carton-fecha").innerText = data.fecha || "No disponible";
         document.getElementById("asistente-nombre").innerText = asistente;
         document.getElementById("resultado").style.display = "block";
         document.getElementById("acciones").style.display = "flex";
