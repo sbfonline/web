@@ -161,6 +161,7 @@
   </div>
 
   <div id="acciones">
+    <button id="copiar">Copiar imagen</button>
     <button id="whatsapp">Enviar por WhatsApp</button>
     <button onclick="resetear()">Cerrar</button>
   </div>
@@ -198,8 +199,8 @@
       const numero = document.getElementById("cel").value.trim();
       const asistente = document.getElementById("asistente").value;
 
-      if (!numero.startsWith("+57")) {
-        alert("⚠️ Ingresa el número con +57 (ej: +573001112233)");
+      if (!numero.startsWith("+")) {
+        alert("⚠️ Ingresa el indicadivo del país +57 (ej: +573001112233)");
         return;
       }
 
@@ -252,10 +253,32 @@
     };
 
     document.getElementById("whatsapp").onclick = () => {
-      const texto = `Hola 👋, aquí está tu cartón de bingo:\n${linkGlobal}`;
+      const texto = `Aquí está tu cartón de bingo:\n${linkGlobal}`;
       const waUrl = `https://wa.me/${numeroGlobal.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
       window.open(waUrl, "_blank");
     };
+
+    document.getElementById("copiar").onclick = async () => {
+      if (!linkGlobal) {
+        alert("⚠️ No hay imagen para copiar.");
+        return;
+      }
+    
+      try {
+        const response = await fetch(linkGlobal);
+        const blob = await response.blob();
+    
+        await navigator.clipboard.write([
+          new ClipboardItem({ [blob.type]: blob })
+        ]);
+    
+        alert("✅ Imagen copiada al portapapeles.\nAhora puedes pegarla en WhatsApp.");
+      } catch (err) {
+        console.error("❌ Error al copiar:", err);
+        alert("❌ No se pudo copiar la imagen. Intenta desde un navegador compatible.");
+      }
+    };
+
 
     function resetear() {
       document.getElementById("cel").value = "";
