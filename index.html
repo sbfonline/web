@@ -160,7 +160,7 @@
     <p><strong>📎 Link:</strong> <a id="carton-link" href="" target="_blank"></a></p>
   </div>
 
-  <div id="acciones">
+  <div id="acciones" style="display: none;">
     <button id="ver-imagen">Ver imagen</button>
     <button id="whatsapp">Enviar por WhatsApp</button>
     <button onclick="resetear()">Cerrar</button>
@@ -234,8 +234,7 @@
       
         document.getElementById("carton-num").innerText = data.carton;
         document.getElementById("carton-link").innerText = data.link;
-        document.getElementById("carton-link").href = data.link;
-        document.getElementById("imagen-carton").src = data.link;
+        document.getElementById("carton-link").href = data.link;        
         document.getElementById("asistente-nombre").innerText = asistente;
         document.getElementById("resultado").style.display = "block";
         document.getElementById("acciones").style.display = "flex";
@@ -270,7 +269,6 @@
       document.getElementById("cel").value = "";
       document.getElementById("resultado").style.display = "none";
       document.getElementById("acciones").style.display = "none";
-      document.getElementById("imagen-carton").src = "";
     }
 
     // Cargar asistentes al iniciar
