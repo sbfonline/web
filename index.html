@@ -143,7 +143,8 @@
   </div>
 
   <div id="resultado">
-    <p><strong>👤 Asistente:</strong> <span id="asistente-nombre"></span></p>
+    <p><strong>👤 Asistente:</strong> <span id="nombre-asistente"></span></p>
+    <p><strong>📱 Celular registrado:</strong> <span id="numero-registrado"></span></p>
     <p><strong>✅ Cartón asignado:</strong> <span id="carton-num"></span></p>
     <p><strong>📎 Link:</strong> <a id="carton-link" href="" target="_blank"></a></p>
   </div>
@@ -169,7 +170,6 @@
     }
 
     document.getElementById("asistente-nombre").innerText = `👤 ${asistente}`;
-
     document.getElementById("cerrar-sesion").onclick = () => {
       localStorage.removeItem("asistente");
       window.location.href = "login.html";
@@ -220,6 +220,9 @@
         document.getElementById("asistente-nombre").innerText = asistente;
         document.getElementById("resultado").style.display = "block";
         document.getElementById("acciones").style.display = "flex";
+
+        document.getElementById("nombre-asistente").innerText = sessionStorage.getItem("asistente") || "(desconocido)";
+        document.getElementById("numero-registrado").innerText = numero;
       
         linkGlobal = data.link;
         numeroGlobal = numero;
@@ -252,9 +255,6 @@
       document.getElementById("resultado").style.display = "none";
       document.getElementById("acciones").style.display = "none";
     }
-
-    // Cargar asistentes al iniciar
-    window.onload = cargarAsistentes;
     
   </script>
 </body>
