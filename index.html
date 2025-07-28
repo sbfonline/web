@@ -1,79 +1,9 @@
-<!-- login.html -->
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ingreso con Clave</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #f0f2f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      padding: 1rem;
-    }
-    input, button {
-      width: 100%;
-      padding: 0.8rem;
-      margin: 0.5rem 0;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      background-color: #1a73e8;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0c5ed7;
-    }
-    .container {
-      width: 100%;
-      max-width: 400px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>🔐 Ingresar con clave</h2>
-    <input id="clave" type="password" placeholder="Escribe tu clave"/>
-    <button onclick="validarClave()">Entrar</button>
-    <p id="error" style="color:red;"></p>
-  </div>
-
-  <script>
-    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycb.../exec"; // Reemplaza con tu URL
-
-    async function validarClave() {
-      const clave = document.getElementById("clave").value.trim();
-      const res = await fetch(`${WEBAPP_URL}?accion=validar&clave=${encodeURIComponent(clave)}`);
-      const data = await res.json();
-
-      if (data.error) {
-        document.getElementById("error").innerText = data.error;
-        return;
-      }
-
-      // Guardar el asistente en localStorage para la siguiente página
-      localStorage.setItem("asistente", data.asistente);
-      window.location.href = "index.html";
-    }
-  </script>
-</body>
-</html>
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Asignar Cartón de Bingo</title>
+  <title>Asignar</title>
   <style>
     :root {
       --azul: #1a73e8;
@@ -90,34 +20,31 @@
       margin-right: auto;
     }
 
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    #asistente-nombre {
+      font-weight: bold;
+      color: #333;
+    }
+
+    #cerrar-sesion {
+      background: transparent;
+      border: none;
+      color: #d00;
+      cursor: pointer;
+      font-size: 0.95rem;
+      text-decoration: underline;
+    }
+
     h2 {
       text-align: center;
       font-size: 1.8rem;
       margin-bottom: 1.5rem;
-    }
-
-    select {
-      width: 100%;
-      padding: 0.8rem;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
-      background-color: white;
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 6.146a.5.5 0 0 1 .708 0L8 8.793l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      background-size: 1rem;
-    }
-    
-    label[for="asistente"] {
-      font-size: 1rem;
-      margin-top: 1rem;
-      margin-bottom: 0.5rem;
-      display: block;
-      color: #333;
     }
     
     input,
@@ -167,14 +94,6 @@
       flex: 1 1 45%;
     }
 
-    #imagen-carton {
-      width: 100%;
-      height: auto;
-      margin-top: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
     #barra {
       width: 100%;
       background-color: #e0e0e0;
@@ -206,14 +125,13 @@
   </style>
 </head>
 <body>
-
-
-  <h2>🎟️ Asignar Cartón</h2>
   
-  <label for="asistente" style="display: block; font-weight: bold; margin-bottom: 0.4rem;">👤 Asistente:</label>
-  <select id="asistente">
-  <option disabled selected>Cargando asistentes...</option>
-  </select>
+  <header>
+    <div id="asistente-nombre"></div>
+    <button id="cerrar-sesion">Cerrar sesión</button>
+  </header>
+  
+  <h2>🎟️ Asignar</h2>
   
   <input id="cel" placeholder="Número de WhatsApp (ej. +573001112233)" />
   <button id="enviar">Asignar cartón</button>
@@ -244,30 +162,24 @@
     let tiempoInterval;
     let tiempoInicio;
 
-    async function cargarAsistentes() {
-      try {
-        const res = await fetch(`${WEBAPP_URL}?accion=asistentes`);
-        const asistentes = await res.json();
-        const select = document.getElementById("asistente");
-
-        select.innerHTML = "";
-        asistentes.forEach(nombre => {
-          const opt = document.createElement("option");
-          opt.value = nombre.toLowerCase();
-          opt.textContent = nombre;
-          select.appendChild(opt);
-        });
-      } catch (e) {
-        alert("⚠️ No se pudo cargar la lista de asistentes");
-        console.error(e);
-      }
-      console.log("Cargando asistentes desde:", `${WEBAPP_URL}?accion=asistentes`)
+    // 1️⃣ Verificar login
+    const asistente = localStorage.getItem("asistente");
+    if (!asistente) {
+      window.location.href = "login.html";
     }
+
+    document.getElementById("asistente-nombre").innerText = `👤 ${asistente}`;
+
+    document.getElementById("cerrar-sesion").onclick = () => {
+      localStorage.removeItem("asistente");
+      window.location.href = "login.html";
+    };
+
+    // 2️⃣ Función principal de asignar cartón
 
     document.getElementById("enviar").onclick = async () => {
       
       const numero = document.getElementById("cel").value.trim();
-      const asistente = document.getElementById("asistente").value;
 
       if (!numero.startsWith("+")) {
         alert("⚠️ Ingresa el indicadivo del país +57 (ej: +573001112233)");
