@@ -92,12 +92,12 @@
         const res = await fetch(`${WEBAPP_URL}?accion=validar&clave=${encodeURIComponent(clave)}`);
         const data = await res.json();
 
-        if (data.valido) {
-          localStorage.setItem("asistente", data.asistente); // Guarda el nombre
-          window.location.href = "index.html";
-        } else {
+        if (data.error) {
           error.innerText = "Clave incorrecta";
           error.style.display = "block";
+        } else {
+          localStorage.setItem("asistente", data.asistente); // Guarda el nombre
+          window.location.href = "index.html";
         }
       } catch (e) {
         console.error("Error de conexión", e);
