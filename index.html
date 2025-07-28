@@ -143,7 +143,7 @@
   </div>
 
   <div id="resultado">
-    <p><strong>👤 Asistente:</strong> <span id="nombre-asistente"></span></p>
+    <p><strong>👤 Asistente:</strong> <span id="asistente-nombre"></span></p>
     <p><strong>🆔 ID del cartón:</strong> <span id="carton-id"></span></p>
     <p><strong>📅 Fecha del sorteo:</strong> <span id="carton-fecha"></span></p>
     <p><strong>📱 Celular registrado:</strong> <span id="numero-registrado"></span></p>
@@ -243,12 +243,14 @@
     document.getElementById("whatsapp").onclick = () => {
       const idTexto = document.getElementById("carton-id").innerText;
       const fechaTexto = document.getElementById("carton-fecha").innerText;
-      const texto = `Mucha suerte 🥳🎉
+      const texto = `
+      Mucha suerte 🥳🎉
       
       🆔 Módulo: ${idTexto}
       📅 Fecha del sorteo: ${fechaTexto}
       
-      📣 Síguenos en Facebook: https://www.facebook.com/ferchodinamica`;
+      📣 Síguenos en Facebook: https://www.facebook.com/ferchodinamica
+      `;
       
       const waUrl = `https://wa.me/${numeroGlobal.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
       
