@@ -261,7 +261,7 @@
 
     document.getElementById("ver-imagen").onclick = () => {
       if (linkGlobal) {
-        window.open(linkGlobal, "_blank");
+        window.open(linkGlobal, "_blank", 'noopener,noreferrer');
       } else {
         alert("⚠️ No hay imagen cargada aún.");
       }
