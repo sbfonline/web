@@ -219,7 +219,14 @@
         document.getElementById("carton-link").innerText = data.link;
         document.getElementById("carton-link").href = data.link;   
         document.getElementById("carton-id").innerText = data.id || "N/A";
-        document.getElementById("carton-fecha").innerText = data.fecha || "No disponible";
+        
+        const fechaObj = new Date(data.fecha);
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Bogota' };
+        const fechaTexto = fechaObj.toLocaleDateString("es-CO", opciones);
+        
+        document.getElementById("carton-fecha").innerText = `📅 Fecha del sorteo: ${fechaTexto}`;        
+        //document.getElementById("carton-fecha").innerText = data.fecha || "No disponible";
+        
         document.getElementById("asistente-nombre").innerText = asistente;
         document.getElementById("resultado").style.display = "block";
         document.getElementById("acciones").style.display = "flex";
@@ -242,14 +249,10 @@
     document.getElementById("whatsapp").onclick = () => {
       const idTexto = document.getElementById("carton-id").innerText;
       const fechaTexto = document.getElementById("carton-fecha").innerText;
-      const texto = `
-      Mucha suerte!!
-      
+      const texto = `Mucha suerte!!      
       Módulo: ${idTexto}
-      Fecha del sorteo: ${fechaTexto}
-      
-      Síguenos en Facebook: https://www.facebook.com/ferchodinamica
-      `;
+      Fecha del sorteo: ${fechaTexto}      
+      Síguenos en Facebook: https://www.facebook.com/ferchodinamica`;
       
       const waUrl = `https://wa.me/${numeroGlobal.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
       
