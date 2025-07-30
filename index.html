@@ -228,8 +228,11 @@
         //document.getElementById("carton-fecha").innerText = data.fecha || "No disponible";
         
         document.getElementById("asistente-nombre").innerText = asistente;
+        
         document.getElementById("resultado").style.display = "block";
         document.getElementById("acciones").style.display = "flex";
+         document.getElementById("cel").disabled = true;
+        document.getElementById("enviar").disabled = true;
 
         //document.getElementById("nombre-asistente").innerText = sessionStorage.getItem("asistente") || "(desconocido)";
         document.getElementById("numero-registrado").innerText = numero;
@@ -271,6 +274,8 @@
       document.getElementById("cel").value = "";
       document.getElementById("resultado").style.display = "none";
       document.getElementById("acciones").style.display = "none";
+      document.getElementById("cel").disabled = false;
+      document.getElementById("enviar").disabled = false;
     }
     
   </script>
