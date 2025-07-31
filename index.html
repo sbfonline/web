@@ -224,13 +224,17 @@
         //const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Bogota' };
         //const fechaTexto = fechaObj.toLocaleDateString("es-CO", opciones);        
         
+        let fechaTexto = "Fecha no disponible";
         if (data.fecha) {
           const fecha = new Date(data.fecha);
-          const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Bogota' };
-          var fechaTexto = fecha.toLocaleDateString("es-CO", opciones);
-        } else {
-          var fechaTexto = "Fecha no disponible";
+          if (!isNaN(fecha.getTime())) {
+            const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Bogota' };
+            fechaTexto = fecha.toLocaleDateString("es-CO", opciones);
+          }
         }
+
+        console.log("Fecha recibida:", data.fecha);
+        console.log("Fecha Salida:", `${fechaTexto}`);
 
         document.getElementById("carton-fecha").innerText = `${fechaTexto}`;
         //document.getElementById("carton-fecha").innerText = data.fecha || "No disponible";
