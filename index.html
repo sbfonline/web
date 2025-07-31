@@ -220,12 +220,12 @@
         document.getElementById("carton-link").href = data.link;   
         document.getElementById("carton-id").innerText = data.id || "N/A";
         
-        const fechaObj = new Date(data.fecha);
-        const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Bogota' };
-        const fechaTexto = fechaObj.toLocaleDateString("es-CO", opciones);
+        //const fechaObj = new Date(data.fecha);
+        //const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Bogota' };
+        //const fechaTexto = fechaObj.toLocaleDateString("es-CO", opciones);
         
-        document.getElementById("carton-fecha").innerText = `${fechaTexto}`;        
-        //document.getElementById("carton-fecha").innerText = data.fecha || "No disponible";
+        //document.getElementById("carton-fecha").innerText = `${fechaTexto}`;        
+        document.getElementById("carton-fecha").innerText = data.fecha || "No disponible";
         
         document.getElementById("asistente-nombre").innerText = asistente;
         
