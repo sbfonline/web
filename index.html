@@ -223,10 +223,14 @@
         //const fechaObj = new Date(data.fecha);
         //const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Bogota' };
         //const fechaTexto = fechaObj.toLocaleDateString("es-CO", opciones);        
-
-        const fechaSorteo = new Date(data.fecha);
-        const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
-        const fechaTexto = fechaSorteo.toLocaleDateString("es-CO", opciones);
+        
+        if (data.fecha) {
+          const fecha = new Date(data.fecha);
+          const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Bogota' };
+          var fechaTexto = fecha.toLocaleDateString("es-CO", opciones);
+        } else {
+          var fechaTexto = "Fecha no disponible";
+        }
 
         document.getElementById("carton-fecha").innerText = `${fechaTexto}`;
         //document.getElementById("carton-fecha").innerText = data.fecha || "No disponible";
