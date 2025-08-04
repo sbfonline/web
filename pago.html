@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registrar Pago Nequi</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      max-width: 500px;
+      margin: auto;
+      background: #f4f4f4;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    input, button {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      background: #25D366;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #mensaje {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Registrar Pago Nequi</h2>
+  <input id="numero" placeholder="📱 Número del comprador (+57...)" />
+  <input id="referencia" placeholder="🔢 Referencia de Nequi" />
+  <button onclick="registrarPago()">Registrar pago</button>
+  <div id="mensaje"></div>
+
+  <script>
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwJleOzBnsq424OG8RncssS3h5P4Ir24-GkEZQCGMhcWPCC4rFA_zQd2MKJdAOdbJjCNg/exec";
+
+    async function registrarPago() {
+      const numero = document.getElementById("numero").value.trim();
+      const referencia = document.getElementById("referencia").value.trim();
+      const mensaje = document.getElementById("mensaje");
+      mensaje.textContent = "";
+
+      if (!numero || !referencia) {
+        mensaje.textContent = "⚠️ Completa todos los campos.";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${WEBAPP_URL}?accion=registrarPago&numero=${encodeURIComponent(numero)}&referencia=${encodeURIComponent(referencia)}`);
+        const data = await res.json();
+
+        if (data.error) {
+          mensaje.textContent = "❌ " + data.error;
+        } else {
+          mensaje.textContent = "✅ Pago registrado correctamente.";
+        }
+      } catch (err) {
+        mensaje.textContent = "❌ Error al conectar con el servidor.";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
