@@ -40,7 +40,7 @@
 
   <header>
     <div id="asistente"></div>
-    <button id="cerrarSesion">Cerrar sesión</button>
+    <button id="cerrar-sesion">Cerrar sesión</button>
   </header>
   
   <h2>Registrar Pago Nequi</h2>
@@ -82,11 +82,18 @@
       }
     }
 
-    function cerrarSesion() {
+    /*function cerrarSesion() {
     localStorage.removeItem("asistente");
     localStorage.removeItem("numero");
     window.location.href = "login.html";
-    }
+    }*/
+
+    document.getElementById("cerrar-sesion").onclick = () => {
+      localStorage.removeItem("asistente");
+      localStorage.removeItem("numero");
+      window.location.href = "login.html";
+    };
+
 
     // Redirigir si no hay asistente
     if (!localStorage.getItem("asistente")) {
@@ -95,6 +102,7 @@
   </script>
 </body>
 </html>
+
 
 
 
