@@ -35,6 +35,12 @@
     }
   </style>
 </head>
+
+  <header>
+    <div id="asistente"></div>
+    <button id="cerrar-sesion">Cerrar sesión</button>
+  </header>
+  
 <body>
   <h2>Registrar Pago Nequi</h2>
   <input id="numero" placeholder="📱 Número del comprador (+57...)" />
@@ -48,16 +54,18 @@
     async function registrarPago() {
       const numero = document.getElementById("numero").value.trim();
       const referencia = document.getElementById("referencia").value.trim();
+      const asistente = localStorage.getItem("asistente");
       const mensaje = document.getElementById("mensaje");
       mensaje.textContent = "";
 
-      if (!numero || !referencia) {
+      if (!numero || !referencia || !asistente) {
         mensaje.textContent = "⚠️ Completa todos los campos.";
         return;
       }
 
       try {
-        const res = await fetch(`${WEBAPP_URL}?accion=registrarPago&numero=${encodeURIComponent(numero)}&referencia=${encodeURIComponent(referencia)}`);
+        //const res = await fetch(`${WEBAPP_URL}?accion=registrarPago&numero=${encodeURIComponent(numero)}&referencia=${encodeURIComponent(referencia)}`);
+        const res = await fetch(`${WEBAPP_URL}?accion=registrarPago&numero=${encodeURIComponent(cel)}&referencia=${encodeURIComponent(referencia)}&asistente=${encodeURIComponent(asistente)}`);
         const data = await res.json();
 
         if (data.error) {
@@ -72,9 +80,21 @@
         console.error(err);
       }
     }
+
+    function cerrarSesion() {
+    localStorage.removeItem("asistente");
+    localStorage.removeItem("numero");
+    window.location.href = "login.html";
+    }
+
+    // Redirigir si no hay asistente
+    if (!localStorage.getItem("asistente")) {
+    window.location.href = "login.html";
+    }
   </script>
 </body>
 </html>
+
 
 
 
