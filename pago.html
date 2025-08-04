@@ -37,7 +37,7 @@
 </head>
 <body>
   <h2>Registrar Pago Nequi</h2>
-  <input id="numero" placeholder="📱 Número del comprador (+57...)" />
+  <input id="cel" placeholder="📱 Número del comprador (+57...)" />
   <input id="referencia" placeholder="🔢 Referencia de Nequi" />
   <button onclick="registrarPago()">Registrar pago</button>
   <div id="mensaje"></div>
@@ -46,7 +46,7 @@
     const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwJleOzBnsq424OG8RncssS3h5P4Ir24-GkEZQCGMhcWPCC4rFA_zQd2MKJdAOdbJjCNg/exec";
 
     async function registrarPago() {
-      const numero = document.getElementById("numero").value.trim();
+      const cel = document.getElementById("numero").value.trim();
       const referencia = document.getElementById("referencia").value.trim();
       const mensaje = document.getElementById("mensaje");
       mensaje.textContent = "";
@@ -64,6 +64,8 @@
           mensaje.textContent = "❌ " + data.error;
         } else {
           mensaje.textContent = "✅ Pago registrado correctamente.";
+          localStorage.setItem("numero", cel);
+          window.location.href = "index.html";
         }
       } catch (err) {
         mensaje.textContent = "❌ Error al conectar con el servidor.";
@@ -73,3 +75,4 @@
   </script>
 </body>
 </html>
+
