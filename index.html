@@ -127,7 +127,7 @@
 <body>
   
   <header>
-    <div id="asistente-nombre"></div>
+    <div id="-nombre"></div>
     <button id="cerrar-sesion">Cerrar sesión</button>
   </header>
   
@@ -166,7 +166,9 @@
 
     // 1️⃣ Verificar login
     const asistente = localStorage.getItem("asistente");
-    if (!asistente) {
+    const numero = localStorage.getItem("numero");
+    
+    if (!asistente || !numero) {
       window.location.href = "login.html";
     }
 
@@ -202,6 +204,7 @@
       }, 100);
 
       try {
+        //const res = await fetch(`${WEBAPP_URL}?numero=${encodeURIComponent(numero)}&asistente=${encodeURIComponent(asistente)}`);
         const res = await fetch(`${WEBAPP_URL}?numero=${encodeURIComponent(numero)}&asistente=${encodeURIComponent(asistente)}`);
 
         if (!res.ok) throw new Error(`Error HTTP ${res.status}: ${res.statusText}`);
@@ -293,3 +296,4 @@
   </script>
 </body>
 </html>
+
