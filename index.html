@@ -153,7 +153,10 @@
   <div id="acciones" style="display: none;">
     <button id="ver-imagen">Ver imagen</button>
     <button id="whatsapp">Enviar por WhatsApp</button>
-    <button onclick="resetear()">Cerrar</button>
+    <button onclick="resetear()">Enviar otro módulo</button>
+    <button onclick="reiniciarFlujo()" style="margin-top: 1rem; background: #e74c3c; color: white; padding: 0.7rem; border: none; border-radius: 5px;">
+      🔁 Nuevo Cliente
+    </button>
   </div>
 
   <script>
@@ -285,6 +288,13 @@
       }
     };
 
+    function reiniciarFlujo() {
+      localStorage.removeItem("asistente");
+      localStorage.removeItem("numero");
+      localStorage.removeItem("referencia");
+      window.location.href = "pago.html";
+    }
+
     function resetear() {
       document.getElementById("cel").value = "";
       document.getElementById("resultado").style.display = "none";
@@ -296,5 +306,6 @@
   </script>
 </body>
 </html>
+
 
 
