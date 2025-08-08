@@ -270,10 +270,9 @@
     document.getElementById("whatsapp").onclick = () => {
       const idTexto = document.getElementById("carton-id").innerText;
       const fechaTexto = document.getElementById("carton-fecha").innerText;
-      const texto = `Mucha suerte!!      
-      Módulo: ${idTexto}
-      Fecha del sorteo: ${fechaTexto}      
-      Síguenos en Facebook: https://www.facebook.com/ferchodinamica`;
+      const texto = `Módulo: ${idTexto}
+      Fecha del sorteo: ${fechaTexto}
+      Síguenos en Facebook: Fercho Dinámica`;
       
       const waUrl = `https://wa.me/${numeroGlobal.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
       
@@ -305,6 +304,7 @@
   </script>
 </body>
 </html>
+
 
 
 
